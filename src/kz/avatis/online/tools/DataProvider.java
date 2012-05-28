@@ -13,8 +13,7 @@ public class DataProvider {
 	
 	private String _url;
 	private String _connectionToken;
-	Document xmlDoc;
-	
+	Document xmlDoc;	
 	public DataProvider(String url) {
 		_url = url;
 		_connectionToken = null;

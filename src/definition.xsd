@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+
+    <xsd:complexType name="SpecializationType">
+    	<xsd:sequence>
+    		<xsd:element name="name" type="xsd:string"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="CompanyType">
+    	<xsd:sequence>
+    		<xsd:element name="name" type="xsd:string"></xsd:element>
+    		<xsd:element name="description" type="xsd:string"></xsd:element>
+    		<xsd:element name="city" type="xsd:string"></xsd:element>
+    		<xsd:element name="phones" type="xsd:string"></xsd:element>
+    		<xsd:element name="address" type="xsd:string"></xsd:element>
+    		<xsd:element name="specialization"
+    			type="SpecializationType">
+    		</xsd:element>
+
+    		<xsd:element name="subspecs" type="SubspecializationType" maxOccurs="unbounded"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="SubspecializationType">
+    	<xsd:sequence>
+    		<xsd:element name="name" type="xsd:string"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="ExpertType">
+    	<xsd:sequence>
+    		<xsd:element name="name" type="xsd:string"></xsd:element>
+    		<xsd:element name="occupation" type="xsd:string"></xsd:element>
+    		<xsd:element name="photo" type="xsd:string"></xsd:element>
+    		<xsd:element name="services" type="ServiceType"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="ServiceType">
+    	<xsd:sequence>
+    		<xsd:element name="name" type="xsd:string"></xsd:element>
+    		<xsd:element name="experts" type="ExpertType"
+    			maxOccurs="unbounded" minOccurs="1">
+    		</xsd:element>
+    		<xsd:element name="subspec" type="SubspecializationType"></xsd:element>
+    		<xsd:element name="duration" type="xsd:int"></xsd:element>
+    		<xsd:element name="description" type="xsd:string"></xsd:element>
+    		<xsd:element name="cost" type="xsd:int"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RecordType">
+    	<xsd:sequence>
+    		<xsd:element name="startTime" type="xsd:dateTime"></xsd:element>
+    		<xsd:element name="endTime" type="xsd:dateTime"></xsd:element>
+    		<xsd:element name="expert" type="ExpertType"></xsd:element>
+    		<xsd:element name="service" type="ServiceType"></xsd:element>
+    		<xsd:element name="approved" type="xsd:boolean"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>
+
