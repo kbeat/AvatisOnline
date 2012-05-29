@@ -62,5 +62,25 @@
     		<xsd:element name="approved" type="xsd:boolean"></xsd:element>
     	</xsd:sequence>
     </xsd:complexType>
+
+    <xsd:element name="Specializations">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Specialization" type="SpecializationType" minOccurs="1" maxOccurs="unbounded"></xsd:element>
+			</xsd:sequence>
+			<xsd:attribute name="token" type="xsd:string"></xsd:attribute>
+		</xsd:complexType>    	
+    </xsd:element>
+    
+    <xsd:element name="Records">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Record" type="RecordType" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+			</xsd:sequence>
+			<xsd:attribute name="token" type="xsd:string"></xsd:attribute>
+		</xsd:complexType>    	
+    </xsd:element>
+
+    
 </xsd:schema>
 
