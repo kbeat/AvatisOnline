@@ -1,7 +1,9 @@
 package kz.avatis.online;
 
 import java.io.FileOutputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -31,13 +33,24 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
+		Map<String,String> pars = new HashMap<String,String>();
+		pars.put("par1", "val1");
+		pars.put("par2", "val2");
 		
-		DataProxy dp = new DataProxy("url");
+		DataProxy dp = new DataProxy("http://192.168.1.103/avest/data.xml");
+		dp.connect(pars);
+		Specializations s = dp.getSpecializations();
+		List<SpecializationType> ss = s.getSpecialization();
+		System.out.println(s.getToken());
+		for (SpecializationType st : ss) {
+			System.out.println(st.getName());
+		}
+		/*
 		Specializations ss = dp.getSpecializations();
 		List<SpecializationType> st = ss.getSpecialization();
 		//System.out.println()
 		for (SpecializationType s : st) {
 			System.out.println(s.getName());
-		}
+		}*/
 	}
 }
