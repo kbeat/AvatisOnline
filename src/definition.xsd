@@ -33,9 +33,10 @@
     <xsd:complexType name="ExpertType">
     	<xsd:sequence>
     		<xsd:element name="name" type="xsd:string"></xsd:element>
+    		<xsd:element name="company" type="CompanyType"></xsd:element>
     		<xsd:element name="description" type="xsd:string"></xsd:element>
-            <xsd:element name="services" type="ServiceType"></xsd:element>
-            <xsd:element name="phone" type="xsd:string"></xsd:element>
+    		<xsd:element name="services" type="ServiceType"></xsd:element>
+    		<xsd:element name="phone" type="xsd:string"></xsd:element>
     		<xsd:element name="email" type="xsd:string"></xsd:element>
     		<xsd:element name="skype" type="xsd:string"></xsd:element>
     		<xsd:element name="occupation" type="xsd:string"></xsd:element>
@@ -46,9 +47,6 @@
     <xsd:complexType name="ServiceType">
     	<xsd:sequence>
     		<xsd:element name="name" type="xsd:string"></xsd:element>
-    		<xsd:element name="experts" type="ExpertType"
-    			maxOccurs="unbounded" minOccurs="1">
-    		</xsd:element>
     		<xsd:element name="subspec" type="SubspecializationType"></xsd:element>
     		<xsd:element name="duration" type="xsd:int"></xsd:element>
     		<xsd:element name="description" type="xsd:string"></xsd:element>
