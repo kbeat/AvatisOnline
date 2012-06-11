@@ -18,6 +18,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import kz.avatis.online.models.ObjectFactory;
 import kz.avatis.online.models.RecordType;
 import kz.avatis.online.models.Records;
+import kz.avatis.online.models.Response;
 import kz.avatis.online.models.SpecializationType;
 import kz.avatis.online.models.Specializations;
 
@@ -36,6 +37,10 @@ public class DataProxy {
 		_connectionToken = null;
 	}
 	
+	public String getToken() {
+		return _connectionToken;
+	}
+	
 	/*
 	 * 
 	 * method for data connection
@@ -49,14 +54,37 @@ public class DataProxy {
 		if (parMap != null) {
 			Set<Map.Entry<String, String>> parameters = parMap.entrySet();
 			for (Map.Entry<String, String> parameter: parameters) {
-				_query += parameter.getKey() + "=" + parameter.getValue();
+				_query += parameter.getKey() + "=" + parameter.getValue() + "&";
 			}
 		}
 	}
 	
-	public String login(Map<String, String> pars) {
+	/*
+	 * 
+	 * Tries to login, if success than sets the token
+	 * 
+	 */
+	public boolean login(Map<String, String> pars) {
+		
+		boolean result = false;
 		connect(pars);
-		return null;
+		
+		try {
+			JAXBContext jc = JAXBContext.newInstance("kz.avatis.online.models");
+			Unmarshaller um = jc.createUnmarshaller();
+			URL url = new URL(_url + _query);
+			Response loginResponse = (Response)um.unmarshal(url);
+			if (loginResponse.getStatus() == 1) {
+				this._connectionToken = loginResponse.getToken();
+				result = true;
+			}
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 	
 	public Records getRecords() {
