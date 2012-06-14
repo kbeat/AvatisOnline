@@ -2,6 +2,7 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
 
+    <xsd:include schemaLocation=""></xsd:include>
     <xsd:complexType name="SpecializationType">
     	<xsd:sequence>
     		<xsd:element name="name" type="xsd:string"></xsd:element>
@@ -56,11 +57,14 @@
 
     <xsd:complexType name="RecordType">
     	<xsd:sequence>
+    		<xsd:element name="clientName" type="xsd:string"></xsd:element>
+    		<xsd:element name="clientPhone" type="xsd:string"></xsd:element>
     		<xsd:element name="startTime" type="xsd:dateTime"></xsd:element>
     		<xsd:element name="endTime" type="xsd:dateTime"></xsd:element>
-    		<xsd:element name="expert" type="ExpertType"></xsd:element>
-    		<xsd:element name="service" type="ServiceType"></xsd:element>
+    		<xsd:element name="expert" type="expertNameType"></xsd:element>
+    		<xsd:element name="service" type="serviceNameType"></xsd:element>
     		<xsd:element name="approved" type="xsd:boolean"></xsd:element>
+    		<xsd:element name="price" type="xsd:int"></xsd:element>
     	</xsd:sequence>
     </xsd:complexType>
 
@@ -94,5 +98,34 @@
     	</xsd:complexType>
     </xsd:element>
     
+ 	<xsd:simpleType name="expertNameValueType">
+ 		<xsd:restriction base="xsd:string">
+ 		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="expertNameType">
+	  <xsd:simpleContent>
+	    <xsd:extension base="expertNameValueType">
+	      <xsd:attribute name="id" type="xsd:int">
+	      </xsd:attribute>
+	    </xsd:extension>
+	  </xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:simpleType name="serviceNameValueType">
+ 		<xsd:restriction base="xsd:string">
+ 		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="serviceNameType">
+	  <xsd:simpleContent>
+	    <xsd:extension base="serviceNameValueType">
+	      <xsd:attribute name="id" type="xsd:int">
+	      </xsd:attribute>
+	    </xsd:extension>
+	  </xsd:simpleContent>
+	</xsd:complexType>
+
+
 </xsd:schema>
 

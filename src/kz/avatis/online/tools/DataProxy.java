@@ -3,22 +3,37 @@ package kz.avatis.online.tools;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
+import java.util.TimeZone;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.Duration;
+import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import kz.avatis.online.models.ExpertNameType;
 import kz.avatis.online.models.ObjectFactory;
 import kz.avatis.online.models.RecordType;
 import kz.avatis.online.models.Records;
 import kz.avatis.online.models.Response;
+import kz.avatis.online.models.ServiceNameType;
 import kz.avatis.online.models.SpecializationType;
 import kz.avatis.online.models.Specializations;
 
@@ -26,11 +41,17 @@ import oracle.jrockit.jfr.openmbean.RecordingType;
 
 import org.w3c.dom.Document;
 
+import com.sun.org.apache.xerces.internal.util.URI.MalformedURIException;
+
 public class DataProxy {
 	
 	private String _url, _query;
 	private String _connectionToken;
-		
+
+	/*
+	 * Constants
+	 */
+	public static final String QUERY_GETRECORDS = "?type=records";
 
 	public DataProxy(String url) {
 		_url = url;
@@ -93,12 +114,14 @@ public class DataProxy {
 		try {
 			JAXBContext jc = JAXBContext.newInstance("kz.avatis.online.models");
 			Unmarshaller um = jc.createUnmarshaller();
-			
-			//result = (Specializations)um.unmarshal(new FileInputStream("result.xml"));
+			URL url = new URL(_url + QUERY_GETRECORDS+"&token="+_connectionToken);
+			result = (Records)um.unmarshal(url);
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 		
 		return result;
 	}
@@ -123,7 +146,7 @@ public class DataProxy {
 		return result;
 	}
 	
-	public void justCheck() {
+	public void justCheck() throws DatatypeConfigurationException {
 		// shows the marshalling process
 		try {
 			JAXBContext jc = JAXBContext.newInstance("kz.avatis.online.models");
@@ -136,9 +159,27 @@ public class DataProxy {
 			
 			List data = rs.getRecord();
 			
-			RecordType rt = new RecordType();
+			
 			for (int i=0;i<5;i++) {
+				RecordType rt = new RecordType();
+				GregorianCalendar c = new GregorianCalendar();
+				c.setTime(new Date(1234567890));
+				XMLGregorianCalendar date2 = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+				
+				rt.setStartTime(date2);
+				rt.setEndTime(date2);
+				ExpertNameType es = new ExpertNameType();
+				es.setId(19*i);
+				es.setValue("FOMA FOMA FOMA");
+				rt.setExpert(es);
+				ServiceNameType ss = new ServiceNameType();
+				ss.setId(23*i);
+				ss.setValue(String.valueOf(i)+" OTBELIVANIE");
+				rt.setService(ss);
 				rt.setApproved(false);
+				rt.setPrice(i*541);
+				rt.setClientName("EGOR EGORUSHKA");
+				rt.setClientPhone("+5323423234");
 				data.add(rt);
 			}
 			
