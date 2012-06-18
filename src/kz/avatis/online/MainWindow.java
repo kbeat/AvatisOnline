@@ -4,6 +4,8 @@ import java.awt.CardLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,12 +15,16 @@ import javax.swing.JLabel;
 import javax.xml.datatype.DatatypeConfigurationException;
 
 import kz.avatis.online.tools.DataProxy;
+import kz.avatis.online.tools.Log;
+import kz.avatis.online.tools.PeriodicChecker;
 import kz.avatis.online.tools.Translator;
 
 public class MainWindow extends JFrame {
 
 	private static final long serialVersionUID = 7727711190347516051L;
-		
+
+	static PeriodicChecker pc;
+	
 	public static void main(String [] args) throws DatatypeConfigurationException {
 		final MainWindow mw = new MainWindow();
 		final LoginPanel lp;
@@ -28,6 +34,26 @@ public class MainWindow extends JFrame {
 		final CardLayout mcl = new MyCardLayout();
 		mw.setLayout(mcl);
 		
+		mw.addWindowListener(new WindowAdapter() {
+		      public void windowClosing(WindowEvent e) {
+		    	  pc.interruptProcess();
+		    	  System.exit(0);
+		      }
+			}
+		);
+		/*
+		 * 
+		 * debug code
+		 * 
+		 */
+		pc = new PeriodicChecker();
+		pc.start();
+		
+		/*
+		 * 
+		 * end of debug code
+		 * 
+		 */
 		
 		DataProxy dp = new DataProxy("http://192.168.1.3");
 		dp.justCheck();
@@ -48,7 +74,7 @@ public class MainWindow extends JFrame {
 					mp.fillTable(dp);
 					mcl.show(mw.getContentPane(), "main");
 					mw.setExtendedState(Frame.MAXIMIZED_BOTH);
-					mw.resize(1000, 1000);
+					
 					mw.repaint();
 					mw.pack();
 				} else {
@@ -62,5 +88,7 @@ public class MainWindow extends JFrame {
 		mw.pack();
 		mw.setVisible(true);
 	}
+	
+	
 
 }
