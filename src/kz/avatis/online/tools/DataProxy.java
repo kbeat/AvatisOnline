@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -29,6 +30,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import kz.avatis.online.models.ExpertNameType;
+import kz.avatis.online.models.ExpertType;
 import kz.avatis.online.models.ObjectFactory;
 import kz.avatis.online.models.RecordType;
 import kz.avatis.online.models.Records;
@@ -47,15 +49,17 @@ public class DataProxy {
 	
 	private String _url, _query;
 	private String _connectionToken;
-
-	/*
-	 * Constants
-	 */
-	public static final String QUERY_GETRECORDS = "?type=records";
+	private JAXBContext jc = null;
 
 	public DataProxy(String url) {
 		_url = url;
 		_connectionToken = null;
+		try {
+			jc = JAXBContext.newInstance("kz.avatis.online.models");
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public String getToken() {
@@ -78,6 +82,8 @@ public class DataProxy {
 				_query += parameter.getKey() + "=" + parameter.getValue() + "&";
 			}
 		}
+		
+		System.out.println(_query);
 	}
 	
 	/*
@@ -85,13 +91,16 @@ public class DataProxy {
 	 * Tries to login, if success than sets the token
 	 * 
 	 */
-	public boolean login(Map<String, String> pars) {
+	public boolean login(String login, String pass) {
 		
 		boolean result = false;
+		Map<String, String> pars = new HashMap<String, String>();
+		pars.put("login", login);
+		pars.put("password", pass);
+		pars.put("type", Constants.QUERY_LOGIN);
 		connect(pars);
 		
 		try {
-			JAXBContext jc = JAXBContext.newInstance("kz.avatis.online.models");
 			Unmarshaller um = jc.createUnmarshaller();
 			URL url = new URL(_url + _query);
 			Response loginResponse = (Response)um.unmarshal(url);
@@ -108,13 +117,17 @@ public class DataProxy {
 		return result;
 	}
 	
+	/*
+	 * 
+	 * The list of records by the query
+	 * 
+	 */
 	public Records getRecords() {
 		Records result = null;
 		
 		try {
-			JAXBContext jc = JAXBContext.newInstance("kz.avatis.online.models");
 			Unmarshaller um = jc.createUnmarshaller();
-			URL url = new URL(_url + QUERY_GETRECORDS+"&token="+_connectionToken);
+			URL url = new URL(_url + "?type="+Constants.QUERY_GETRECORDS+"&token="+_connectionToken);
 			result = (Records)um.unmarshal(url);
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
@@ -126,13 +139,38 @@ public class DataProxy {
 		return result;
 	}
 	
+	/*
+	 * 
+	 * Synchronizes the lists with the online database. The object ID is the key field on which the synchronization is taken.
+	 * The following lists are synced:
+	 * - Experts
+	 * - 
+	 * 
+	 */
+	public void synchronize(int status) {
+		switch (status) {
+		case Constants.SYNCHRONIZE_SENDDATA :
+			sendData();
+			break;
+		case Constants.SYNCHRONIZE_GETDATA :
+			break;
+		}
+	}
+	
+	private void sendData() {
+		
+	}
+	
+	public List<ExpertType> getExperts() {
+		return null;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public Specializations getSpecializations() {
 		
 		Specializations result = null;
 		
 		try {
-			JAXBContext jc = JAXBContext.newInstance("kz.avatis.online.models");
 			Unmarshaller um = jc.createUnmarshaller();
 			URL url = new URL(_url);
 			System.out.println(_url+_query);
@@ -149,7 +187,6 @@ public class DataProxy {
 	public void justCheck() throws DatatypeConfigurationException {
 		// shows the marshalling process
 		try {
-			JAXBContext jc = JAXBContext.newInstance("kz.avatis.online.models");
 			Marshaller m = jc.createMarshaller();
 			
 			ObjectFactory of = new ObjectFactory();
