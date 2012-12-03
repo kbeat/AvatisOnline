@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<response type="getcategories">
+    <categories>
+        <category id="%ID%">%NAME%</category>
+        ...
+    </categories>
+</response>

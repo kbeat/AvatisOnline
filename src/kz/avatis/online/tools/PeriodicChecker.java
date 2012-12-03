@@ -27,7 +27,8 @@ public class PeriodicChecker extends Thread {
 				Log.m("Online: "+a.toString()+" at "+(new Date(System.currentTimeMillis())).toString());
 				Thread.sleep(CHECK_INTERVAL);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				// interruption during sleep
+				// just skip it
 			} catch (UnknownHostException e) {
 				Log.m("Offline: at "+(new Date(System.currentTimeMillis())).toString());
 				isOnline = false;

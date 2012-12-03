@@ -1,21 +1,16 @@
 package kz.avatis.online.tools;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.TimeZone;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -23,27 +18,15 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import kz.avatis.online.models.ExpertNameType;
-import kz.avatis.online.models.ExpertType;
 import kz.avatis.online.models.ObjectFactory;
 import kz.avatis.online.models.RecordType;
 import kz.avatis.online.models.Records;
 import kz.avatis.online.models.Response;
 import kz.avatis.online.models.ServiceNameType;
-import kz.avatis.online.models.SpecializationType;
 import kz.avatis.online.models.Specializations;
-
-import oracle.jrockit.jfr.openmbean.RecordingType;
-
-import org.w3c.dom.Document;
-
-import com.sun.org.apache.xerces.internal.util.URI.MalformedURIException;
 
 public class DataProxy {
 	
@@ -117,20 +100,20 @@ public class DataProxy {
 		return result;
 	}
 	
-	/*
-	 * 
-	 * The list of records by the query
-	 * 
+	/**
+	 * Gets any simple data by request depending on the query that is taken from Constants.QUERY*.
+	 * @param query
+	 * @return
 	 */
-	public Records getRecords() {
-		Records result = null;
+	@SuppressWarnings("unchecked")
+	public <T> T getData(String query) {
+		T result = null;
 		
 		try {
 			Unmarshaller um = jc.createUnmarshaller();
-			URL url = new URL(_url + "?type="+Constants.QUERY_GETRECORDS+"&token="+_connectionToken);
-			result = (Records)um.unmarshal(url);
+			URL url = new URL(_url + "?type="+query+"&token="+_connectionToken);
+			result = (T)um.unmarshal(url);
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -138,6 +121,8 @@ public class DataProxy {
 		
 		return result;
 	}
+	
+	
 	
 	/*
 	 * 
@@ -161,9 +146,7 @@ public class DataProxy {
 		
 	}
 	
-	public List<ExpertType> getExperts() {
-		return null;
-	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public Specializations getSpecializations() {
@@ -184,6 +167,18 @@ public class DataProxy {
 		return result;
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public void justCheck() throws DatatypeConfigurationException {
 		// shows the marshalling process
 		try {
@@ -202,9 +197,9 @@ public class DataProxy {
 				GregorianCalendar c = new GregorianCalendar();
 				c.setTime(new Date(1234567890));
 				XMLGregorianCalendar date2 = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-				
-				rt.setStartTime(date2);
-				rt.setEndTime(date2);
+				rt.setId(new Random().nextInt());
+				rt.setStartTime(4345345);
+				rt.setEndTime(345345322);
 				ExpertNameType es = new ExpertNameType();
 				es.setId(19*i);
 				es.setValue("FOMA FOMA FOMA");

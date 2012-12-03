@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<response type="getservices">
+    <services>
+    	<service showOnPage="%SHOWONPAGE%" id="%ID%">
+	        <name>%NAME%</name>
+	        <duration>%DURATION%</duration>
+	        <category>%CATEGORY_ID%</category>
+	        <description>%DESCRIPTION%</description>
+	        <price>%PRICE%</price>
+    </service>
+    </services>
+</response>
