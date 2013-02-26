@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
 
-    <xsd:include schemaLocation=""></xsd:include>
+    <xsd:element name="response">
+        <xsd:annotation>
+            <xsd:documentation>Generic response object for all the types of communication</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:any minOccurs="1" />
+            </xsd:sequence>
+            <xsd:attribute name="type" type="xsd:string" />
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:complexType name="loginType">
+        <xsd:annotation>
+            <xsd:documentation>Login response</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="status" type="xsd:int" />
+            <xsd:element name="token" minOccurs="0" maxOccurs="1" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+
     <xsd:complexType name="SpecializationType">
     	<xsd:sequence>
     		<xsd:element name="name" type="xsd:string"></xsd:element>
@@ -82,24 +103,11 @@
 		<xsd:complexType>
 			<xsd:sequence>
 				<xsd:element name="Record" type="RecordType" minOccurs="0" maxOccurs="unbounded"></xsd:element>
-				
 			</xsd:sequence>
 			<xsd:attribute name="token" type="xsd:string"></xsd:attribute>
 		</xsd:complexType>    	
     </xsd:element>
 
-    
-
-
-    <xsd:element name="response">
-    	<xsd:complexType>
-    		<xsd:sequence>
-    			<xsd:element name="status" type="xsd:int" minOccurs="1" maxOccurs="1"></xsd:element>
-    			<xsd:element name="token" type="xsd:string" minOccurs="0" maxOccurs="1"></xsd:element>
-    		</xsd:sequence>
-    	</xsd:complexType>
-    </xsd:element>
-    
  	<xsd:simpleType name="expertNameValueType">
  		<xsd:restriction base="xsd:string">
  		</xsd:restriction>
@@ -127,8 +135,5 @@
 	    </xsd:extension>
 	  </xsd:simpleContent>
 	</xsd:complexType>
-
-
-
 </xsd:schema>
 

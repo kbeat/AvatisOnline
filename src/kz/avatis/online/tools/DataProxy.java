@@ -1,5 +1,9 @@
 package kz.avatis.online.tools;
 
+import kz.avatis.online.model.LoginType;
+import kz.avatis.online.model.Response;
+import kz.avatis.online.models.*;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -20,14 +24,6 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import kz.avatis.online.models.ExpertNameType;
-import kz.avatis.online.models.ObjectFactory;
-import kz.avatis.online.models.RecordType;
-import kz.avatis.online.models.Records;
-import kz.avatis.online.models.Response;
-import kz.avatis.online.models.ServiceNameType;
-import kz.avatis.online.models.Specializations;
-
 public class DataProxy {
 	
 	private String _url, _query;
@@ -38,7 +34,7 @@ public class DataProxy {
 		_url = url;
 		_connectionToken = null;
 		try {
-			jc = JAXBContext.newInstance("kz.avatis.online.models");
+			jc = JAXBContext.newInstance("kz.avatis.online.model");
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -84,10 +80,15 @@ public class DataProxy {
 		connect(pars);
 		
 		try {
-			Unmarshaller um = jc.createUnmarshaller();
-			URL url = new URL(_url + _query);
-			Response loginResponse = (Response)um.unmarshal(url);
-			if (loginResponse.getStatus() == 1) {
+            Unmarshaller um = jc.createUnmarshaller();
+
+            URL url = new URL(_url + _query);
+
+			Response response = (Response)um.unmarshal(url);
+
+            LoginType loginResponse = (LoginType) response.getAny();
+
+            if (loginResponse.getStatus() == 1) {
 				this._connectionToken = loginResponse.getToken();
 				result = true;
 			}
@@ -95,7 +96,9 @@ public class DataProxy {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		} catch (Exception e) {
+            e.printStackTrace();
+        }
 		
 		return result;
 	}
@@ -110,14 +113,17 @@ public class DataProxy {
 		T result = null;
 		
 		try {
-			Unmarshaller um = jc.createUnmarshaller();
-			URL url = new URL(_url + "?type="+query+"&token="+_connectionToken);
-			result = (T)um.unmarshal(url);
+            Unmarshaller um = jc.createUnmarshaller();
+            URL url = new URL(_url + "?type="+query+"&token="+_connectionToken);
+
+            result = (T)um.unmarshal(url);
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-		}
+		} catch (Exception e) {
+            e.printStackTrace();
+        }
 		
 		return result;
 	}
