@@ -8,6 +8,8 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
+ * Login response
+ * 
  * <p>Java class for loginType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.

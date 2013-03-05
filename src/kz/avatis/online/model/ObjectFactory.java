@@ -38,6 +38,38 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ServiceNameType }
+     * 
+     */
+    public ServiceNameType createServiceNameType() {
+        return new ServiceNameType();
+    }
+
+    /**
+     * Create an instance of {@link RecordsType }
+     * 
+     */
+    public RecordsType createRecordsType() {
+        return new RecordsType();
+    }
+
+    /**
+     * Create an instance of {@link ExpertNameType }
+     * 
+     */
+    public ExpertNameType createExpertNameType() {
+        return new ExpertNameType();
+    }
+
+    /**
+     * Create an instance of {@link RecordType }
+     * 
+     */
+    public RecordType createRecordType() {
+        return new RecordType();
+    }
+
+    /**
      * Create an instance of {@link LoginType }
      * 
      */
