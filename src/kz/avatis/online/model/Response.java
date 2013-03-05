@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;any/>
  *       &lt;/sequence>
  *       &lt;attribute name="type" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="token" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -40,6 +41,8 @@ public class Response {
     protected Object any;
     @XmlAttribute(name = "type")
     protected String type;
+    @XmlAttribute(name = "token")
+    protected String token;
 
     /**
      * Gets the value of the any property.
@@ -87,6 +90,30 @@ public class Response {
      */
     public void setType(String value) {
         this.type = value;
+    }
+
+    /**
+     * Gets the value of the token property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getToken() {
+        return token;
+    }
+
+    /**
+     * Sets the value of the token property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setToken(String value) {
+        this.token = value;
     }
 
 }

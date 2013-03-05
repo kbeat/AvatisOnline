@@ -38,19 +38,19 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link Record }
+     * 
+     */
+    public Record createRecord() {
+        return new Record();
+    }
+
+    /**
      * Create an instance of {@link ServiceNameType }
      * 
      */
     public ServiceNameType createServiceNameType() {
         return new ServiceNameType();
-    }
-
-    /**
-     * Create an instance of {@link RecordsType }
-     * 
-     */
-    public RecordsType createRecordsType() {
-        return new RecordsType();
     }
 
     /**
@@ -62,19 +62,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link RecordType }
+     * Create an instance of {@link Login }
      * 
      */
-    public RecordType createRecordType() {
-        return new RecordType();
+    public Login createLogin() {
+        return new Login();
     }
 
     /**
-     * Create an instance of {@link LoginType }
+     * Create an instance of {@link Records }
      * 
      */
-    public LoginType createLoginType() {
-        return new LoginType();
+    public Records createRecords() {
+        return new Records();
     }
 
 }

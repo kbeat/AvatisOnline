@@ -6,7 +6,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
 
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
@@ -15,27 +14,26 @@ import javax.swing.JScrollPane;
 import java.awt.Insets;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.JButton;
 import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.List;
 import java.util.Vector;
 
-import kz.avatis.online.models.RecordType;
-import kz.avatis.online.models.Records;
+import kz.avatis.online.actions.AddRecordListener;
+import kz.avatis.online.model.Record;
+import kz.avatis.online.model.Records;
+import kz.avatis.online.model.Response;
 import kz.avatis.online.tools.Constants;
 import kz.avatis.online.tools.DataProxy;
 import kz.avatis.online.tools.Log;
 import kz.avatis.online.tools.PeriodicChecker;
-import kz.avatis.online.tools.Translator;
 
 public class FrontFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JTable dataTable;
-	private RecordsTableModel dtm;
+	private static RecordsTableModel dtm;
 	PeriodicChecker pc;
 	
 	/**
@@ -43,10 +41,10 @@ public class FrontFrame extends JFrame {
 	 * @param dp
 	 */
 	public void fillTable(DataProxy dp) {
-		Records r = dp.getData(Constants.QUERY_GETRECORDS);
-		List<RecordType> lrt = r.getRecord();
-		
-		Vector<RecordType> rowData = new Vector<RecordType>(lrt);
+		Response r = dp.getData(Constants.QUERY_GETRECORDS);
+		Records lrt = (Records) r.getAny();
+		System.out.println(lrt.getRecord().get(0).getClientName());
+		Vector<Record> rowData = new Vector<Record>(lrt.getRecord());
 		dtm.setRowData(rowData);
 	}
 	
@@ -94,7 +92,7 @@ public class FrontFrame extends JFrame {
 		if (ld.isSucceeded()) {
 			
 			Log.m("Succesfully connected to "+Constants.CONNECTION_URL+" with token = "+dp.getToken());
-			
+
 			// fill the records table
 			frame.fillTable(dp);
 			frame.setSize(1000, 1000);
@@ -151,7 +149,8 @@ public class FrontFrame extends JFrame {
 		dtm = new RecordsTableModel();
 		
 		dataTable = new JTable(dtm);
-		tablePanel.setViewportView(dataTable);
+        tablePanel.setViewportView(dataTable);
+
 		
 		JPanel buttonsPanel = new JPanel();
 		FlowLayout fl_buttonsPanel = (FlowLayout) buttonsPanel.getLayout();
@@ -162,9 +161,11 @@ public class FrontFrame extends JFrame {
 		gbc_buttonsPanel.gridx = 0;
 		gbc_buttonsPanel.gridy = 2;
 		contentPane.add(buttonsPanel, gbc_buttonsPanel);
-		
-		JButton btnNewButton = new JButton("Create Record");
+
+        JButton btnNewButton = new JButton("Create Record");
 		buttonsPanel.add(btnNewButton);
+        AddRecordListener adr = new AddRecordListener(dtm);
+        btnNewButton.addActionListener(adr);
 		
 		JButton btnNewButton_1 = new JButton("Delete Selected");
 		buttonsPanel.add(btnNewButton_1);

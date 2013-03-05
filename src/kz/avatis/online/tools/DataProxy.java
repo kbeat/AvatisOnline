@@ -1,11 +1,13 @@
 package kz.avatis.online.tools;
 
-import kz.avatis.online.model.LoginType;
+import kz.avatis.online.model.Login;
 import kz.avatis.online.model.Response;
-import kz.avatis.online.models.*;
+import kz.avatis.online.models.Specializations;
 
+import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
@@ -86,10 +88,10 @@ public class DataProxy {
 
 			Response response = (Response)um.unmarshal(url);
 
-            LoginType loginResponse = (LoginType) response.getAny();
+            Login loginResponse = (Login) response.getAny();
 
             if (loginResponse.getStatus() == 1) {
-				this._connectionToken = loginResponse.getToken();
+				this._connectionToken = response.getToken();
 				result = true;
 			}
 		} catch (JAXBException e) {
@@ -115,7 +117,7 @@ public class DataProxy {
 		try {
             Unmarshaller um = jc.createUnmarshaller();
             URL url = new URL(_url + "?type="+query+"&token="+_connectionToken);
-
+            Log.m("Getting data: " + url.toString());
             result = (T)um.unmarshal(url);
 		} catch (JAXBException e) {
 			e.printStackTrace();
@@ -184,7 +186,7 @@ public class DataProxy {
 	
 	
 	
-	
+	   /*
 	public void justCheck() throws DatatypeConfigurationException {
 		// shows the marshalling process
 		try {
@@ -231,6 +233,6 @@ public class DataProxy {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}       */
 
 }

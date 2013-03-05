@@ -1,4 +1,4 @@
-package actions;
+package kz.avatis.online.actions;
 
 import kz.avatis.online.RecordsTableModel;
 import kz.avatis.online.model.ObjectFactory;
